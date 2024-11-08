@@ -1,0 +1,85 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "infosha",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "infosha (profile mode)",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile"
+        },
+        {
+            "name": "infosha (release mode)",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release"
+        },
+        {
+            "name": "animated_custom_dropdown",
+            "cwd": "package\\animated_custom_dropdown",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "animated_custom_dropdown (profile mode)",
+            "cwd": "package\\animated_custom_dropdown",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile"
+        },
+        {
+            "name": "animated_custom_dropdown (release mode)",
+            "cwd": "package\\animated_custom_dropdown",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release"
+        },
+        {
+            "name": "call_detector",
+            "cwd": "package\\call_detector",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "call_detector (profile mode)",
+            "cwd": "package\\call_detector",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile"
+        },
+        {
+            "name": "call_detector (release mode)",
+            "cwd": "package\\call_detector",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release"
+        },
+        {
+            "name": "csc_picker",
+            "cwd": "package\\csc_picker",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "csc_picker (profile mode)",
+            "cwd": "package\\csc_picker",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile"
+        },
+        {
+            "name": "csc_picker (release mode)",
+            "cwd": "package\\csc_picker",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release"
+        }
+    ]
+}
