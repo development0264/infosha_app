@@ -108,6 +108,7 @@ class _ViewProfileScreenState extends State<ViewUnregisteredUser> {
       if (viewProfileModel != null) {
         if (viewProfileModel != null &&
             viewProfileModel!.data != null &&
+            viewProfileModel!.data!.reviews != null &&
             viewProfileModel!.data!.reviews!.isNotEmpty) {
           viewProfileModel!.data!.reviews!
               .sort((a, b) => b.createdAt!.compareTo(a.createdAt!));

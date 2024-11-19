@@ -37,6 +37,19 @@ class _TopFollowersScreenState extends State<TopFollowersScreen> {
 
     Provider.of<TopFollowVisitorModel>(context, listen: false).setInit();
     WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (provider.topFollowersModel.data != null &&
+          provider.topFollowersModel.data!.isNotEmpty) {
+        for (var data in provider.topFollowersModel.data!) {
+          precacheImage(NetworkImage(data.profile ?? ""), context);
+        }
+      }
+
+      if (provider.topVisitorsModel.data != null &&
+          provider.topVisitorsModel.data!.isNotEmpty) {
+        for (var data in provider.topVisitorsModel.data!) {
+          precacheImage(NetworkImage(data.profile ?? ""), context);
+        }
+      }
       showAdsDialog();
     });
     super.initState();

@@ -65,8 +65,9 @@ class Data {
     activeSubscriptionPlanName = json['active_subscription_plan_name'];
     profile = json['profile'];
     profession = json['profession'];
-    country =
-        json['country'] != null ? CountryData.fromJson(json['country']) : null;
+    country = json['country'] != null && json['country'] is Map<String, dynamic>
+        ? CountryData.fromJson(json['country'])
+        : null;
     city = json['city'];
     followersCount = json['followers_count'];
     is_friend = json['is_friend'];

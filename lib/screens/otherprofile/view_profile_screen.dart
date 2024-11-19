@@ -117,7 +117,9 @@ class _ViewProfileScreenState extends State<ViewProfileScreen> {
       viewProfileModel = value;
       log("viewProfile ===> ${viewProfileModel!.data!.number}");
 
-      if (viewProfileModel!.data != null &&
+      if (viewProfileModel != null &&
+          viewProfileModel!.data != null &&
+          viewProfileModel!.data!.reviewList != null &&
           viewProfileModel!.data!.reviewList!.isNotEmpty) {
         viewProfileModel!.data!.reviewList!
             .sort((a, b) => b.createdAt!.compareTo(a.createdAt!));

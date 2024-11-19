@@ -151,7 +151,7 @@ dependencies:
   #     url: https://github.com/diegohzea/flutter_overlay_window.git
   #     ref: main
 
-  flutter_background_service: ^5.0.6
+  flutter_background_service: ^5.0.10
   phone_state: ^1.0.3 
   system_alert_window:
     path: package/system_alert_window  
