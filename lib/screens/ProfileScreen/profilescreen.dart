@@ -164,6 +164,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
     popularNumbers.add(GetNickName(addedBy: "", name: mostUsedName));
 
+    Future.delayed(Duration(milliseconds: 1000), () {
+      provider.notifyListeners();
+    });
     super.initState();
   }
 
@@ -731,8 +734,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
               children: [
                 GestureDetector(
                   onTap: () {
-                    Get.to(() => ViewProfileScreen(
-                        id: list[index].reviewerId.toString()));
+                    if (model.user_nickname != "Anonymous") {
+                      Get.to(() => ViewProfileScreen(
+                          id: list[index].reviewerId.toString()));
+                    }
                   },
                   child: Row(
                     children: [
@@ -743,37 +748,40 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         child: ClipOval(
                           child: SizedBox.fromSize(
                             size: Size.fromRadius(Get.height * 0.057),
-                            child: model.profileUrl == null ||
-                                    model.profileUrl ==
-                                        "https://via.placeholder.com/150"
+                            child: model.user_nickname == "Anonymous"
                                 ? Image.asset('images/aysha.png')
-                                : isBase64(model.profileUrl!)
-                                    ? Image.memory(
-                                        base64Decode(model.profileUrl!),
-                                        fit: BoxFit.cover)
-                                    : CachedNetworkImage(
-                                        imageUrl: model.profileUrl!,
-                                        fit: BoxFit.fill,
-                                        errorWidget: (context, url, error) =>
-                                            Image.asset('images/aysha.png'),
-                                        placeholder: (context, url) =>
-                                            const Center(
-                                          child: CircularProgressIndicator(
-                                              color: baseColor),
-                                        ),
-                                      ),
+                                : model.profileUrl == null ||
+                                        model.profileUrl ==
+                                            "https://via.placeholder.com/150"
+                                    ? Image.asset('images/aysha.png')
+                                    : isBase64(model.profileUrl!)
+                                        ? Image.memory(
+                                            base64Decode(model.profileUrl!),
+                                            fit: BoxFit.cover)
+                                        : CachedNetworkImage(
+                                            imageUrl: model.profileUrl!,
+                                            fit: BoxFit.fill,
+                                            errorWidget: (context, url,
+                                                    error) =>
+                                                Image.asset('images/aysha.png'),
+                                            placeholder: (context, url) =>
+                                                const Center(
+                                              child: CircularProgressIndicator(
+                                                  color: baseColor),
+                                            ),
+                                          ),
                           ),
                         ),
                       ),
                       Expanded(
                         child: ListTile(
                           title: Text(
-                            provider.userModel.is_subscription_active ==
+                            /* provider.userModel.is_subscription_active ==
                                         false &&
                                     provider.userModel.is_subscription_active !=
                                         null
                                 ? "Anonymous"
-                                : /* provider.userModel.is_subscription_active == true &&
+                                : */ /* provider.userModel.is_subscription_active == true &&
                                         (provider.userModel
                                                 .active_subscription_plan_name!
                                                 .contains("god") ||
@@ -781,7 +789,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                 .active_subscription_plan_name!
                                                 .contains("king"))
                                     ?  */
-                                model.user_nickname ?? "" /* : "Anonymous" */,
+                            model.user_nickname ?? "" /* : "Anonymous" */,
                             style: const TextStyle(fontSize: 12),
                           ),
                           subtitle: Text(
@@ -1564,7 +1572,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   UIHelper.verticalSpaceSm,
 
                   /// used to show number and redirect dialpad
-                  CallNumberView(phoneNumber: provider.userModel.number),
+                  CallNumberView(
+                      phoneNumber:
+                          "${provider.userModel.counryCode ?? ""}${provider.userModel.number}"),
                   headerWithEdit(
                       label: "Profession".tr,
                       color: whiteColor,

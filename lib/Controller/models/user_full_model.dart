@@ -66,6 +66,7 @@ class Data {
   int? id;
   String? username;
   String? number;
+  String? countryCode;
   String? type;
   String? fcmToken;
   int? isActive;
@@ -107,6 +108,7 @@ class Data {
       {this.id,
       this.username,
       this.number,
+      this.countryCode,
       this.type,
       this.fcmToken,
       this.isActive,
@@ -147,6 +149,7 @@ class Data {
     id = json['id'];
     username = json['username'];
     number = json['number'];
+    countryCode = json['country_code'];
     type = json['type'];
     fcmToken = json['fcm_token'];
     isActive = json['is_active'];
@@ -250,6 +253,7 @@ class Data {
     data['id'] = id;
     data['username'] = username;
     data['number'] = number;
+    data['country_code'] = countryCode;
     data['type'] = type;
     data['fcm_token'] = fcmToken;
     data['is_active'] = isActive;

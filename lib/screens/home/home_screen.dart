@@ -22,6 +22,7 @@ import 'package:infosha/views/app_icons.dart';
 import 'package:infosha/views/colors.dart';
 import 'package:infosha/views/text_styles.dart';
 import 'package:infosha/views/ui_helpers.dart';
+import 'package:infosha/views/widgets/call_number_view.dart';
 import 'package:infosha/views/widgets/namewithlabel_view.dart';
 import 'package:infosha/views/widgets/nickname_view.dart';
 import 'package:infosha/views/widgets/setting_widget.dart';
@@ -219,7 +220,10 @@ class _HomeScreenState extends State<HomeScreen> {
                                                     .userModel.getNickName ??
                                                 []),
                                         UIHelper.verticalSpaceSm,
-                                        Row(
+                                        CallNumberView(
+                                            phoneNumber:
+                                                "${provider.userModel.counryCode ?? ""}${provider.userModel.number}"),
+                                        /* Row(
                                           mainAxisAlignment:
                                               MainAxisAlignment.center,
                                           children: [
@@ -236,7 +240,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                               ),
                                             ),
                                           ],
-                                        ),
+                                        ), */
                                       ],
                                     ),
                                   ),

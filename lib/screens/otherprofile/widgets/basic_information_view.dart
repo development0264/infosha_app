@@ -75,7 +75,6 @@ class BasicInfoViewState extends State<BasicInfoView> {
                     ),
                     //   contentPadding: EdgeInsets.only(left: 10)
                   ),
-                  dropdownColor: lightBlue,
 
                   // initialValue: "name4",
                   controller: genderController,

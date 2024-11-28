@@ -48,7 +48,6 @@ class PlaceInforViewState extends State<PlaceInforView> {
                   borderRadius: BorderRadius.circular(05),
                 ),
               ),
-              dropdownColor: lightBlue,
 
               // initialValue: "name4",
               controller: CountryController,
@@ -85,7 +84,6 @@ class PlaceInforViewState extends State<PlaceInforView> {
                   borderRadius: BorderRadius.circular(05),
                 ),
               ),
-              dropdownColor: lightBlue,
 
               // initialValue: "name4",
               controller: citycontroller,

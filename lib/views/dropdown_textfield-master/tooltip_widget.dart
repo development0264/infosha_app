@@ -150,7 +150,7 @@ class _ToolTipWidgetState extends State<ToolTipWidget> {
                       alignment: Alignment.centerLeft,
                       child: Text(
                         widget.msg,
-                        style: Theme.of(context).textTheme.subtitle1,
+                        style: Theme.of(context).textTheme.bodyMedium,
                       ),
                     ),
                     const SizedBox(

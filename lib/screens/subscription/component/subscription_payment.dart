@@ -3,10 +3,13 @@ import 'dart:convert';
 // import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:infosha/Controller/Viewmodel/userviewmodel.dart';
+import 'package:infosha/config/const.dart';
 import 'package:infosha/screens/home/home_screen.dart';
 import 'package:infosha/utils/error_boundary.dart';
 import 'package:infosha/views/colors.dart';
 import 'package:infosha/views/ui_helpers.dart';
+import 'package:provider/provider.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class SubscriptionPayment extends StatefulWidget {
@@ -74,54 +77,58 @@ class _SubscriptionPaymentState extends State<SubscriptionPayment> {
   @override
   Widget build(BuildContext context) {
     return ErrorBoundary(
-      child: Scaffold(
-          body: SafeArea(
-              child: /* isLoading
+      child: Scaffold(body: SafeArea(
+          child: /* isLoading
                   ? const Center(
                       child: CircularProgressIndicator(color: baseColor))
                   : */
-                  WebView(
-                      zoomEnabled: true,
-                      // javascriptChannels: Set.from(elements),
+              Consumer<UserViewModel>(builder: (context, provider, child) {
+        return WebView(
+            zoomEnabled: true,
+            // javascriptChannels: Set.from(elements),
 
-                      initialUrl: widget.paymentLink,
-                      javascriptMode: JavascriptMode.unrestricted,
-                      navigationDelegate: (navigation) async {
-                        print("navigation ==> $navigation");
-                        return NavigationDecision.navigate;
-                      },
-                      onWebViewCreated: (controller1) {
-                        controller = controller1;
-                        // webViewController!.runJavascriptReturningResult('"document.body.scrollHeight * 100"');
-                      },
-                      onPageStarted: ((url) async {
-                        // await webViewController!.runJavascriptReturningResult("document.documentElement.body.scrollHeight");
-                      }),
-                      onPageFinished: (finish) async {
-                        final response =
-                            await controller.runJavascriptReturningResult(
-                                "document.documentElement.innerText");
+            initialUrl: widget.paymentLink,
+            javascriptMode: JavascriptMode.unrestricted,
+            navigationDelegate: (navigation) async {
+              print("navigation ==> $navigation");
+              return NavigationDecision.navigate;
+            },
+            onWebViewCreated: (controller1) {
+              controller = controller1;
+              // webViewController!.runJavascriptReturningResult('"document.body.scrollHeight * 100"');
+            },
+            onPageStarted: ((url) async {
+              // await webViewController!.runJavascriptReturningResult("document.documentElement.body.scrollHeight");
+            }),
+            onPageFinished: (finish) async {
+              final response = await controller.runJavascriptReturningResult(
+                  "document.documentElement.innerText");
 
-                        var responseData = json.decode(response);
-                        var checkjson = json.decode(responseData);
+              var responseData = json.decode(response);
+              var checkjson = json.decode(responseData);
 
-                        if (checkjson != null) {
-                          if (checkjson["message"] ==
-                              "Subscription create successfully") {
-                            Get.offAll(() => const HomeScreen());
-                            UIHelper.showMySnak(
-                                title: "Subscription",
-                                message: "Subscription create successfully".tr,
-                                isError: false);
-                          } else {
-                            Get.offAll(() => const HomeScreen());
-                          }
-                        }
+              if (checkjson != null) {
+                if (checkjson["message"] ==
+                    "Subscription create successfully") {
+                  provider.userModel =
+                      await provider.getUserProfileById(Params.UserToken);
+                  Get.offAll(() => const HomeScreen());
+                  UIHelper.showMySnak(
+                      title: "Subscription",
+                      message: "Subscription create successfully".tr,
+                      isError: false);
+                } else {
+                  provider.userModel =
+                      await provider.getUserProfileById(Params.UserToken);
+                  Get.offAll(() => const HomeScreen());
+                }
+              }
 
-                        setState(() {
-                          isLoading = false;
-                        });
-                      }) /* WebViewWidget(controller: controller) */)),
+              setState(() {
+                isLoading = false;
+              });
+            });
+      }) /* WebViewWidget(controller: controller) */)),
     );
   }
 }

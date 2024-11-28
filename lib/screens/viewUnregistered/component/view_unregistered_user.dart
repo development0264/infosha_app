@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:country_pickers/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_feed_reaction/widgets/emoji_reaction.dart';
 import 'package:get/get.dart';
@@ -94,7 +95,7 @@ class _ViewProfileScreenState extends State<ViewUnregisteredUser> {
   void initState() {
     super.initState();
 
-    LoadAfterThreeVisit().loadAds(context);
+    // LoadAfterThreeVisit().loadAds(context);
 
     provider = Provider.of<UserViewModel>(context, listen: false);
     print("number ==> ${widget.id}");
@@ -217,7 +218,8 @@ class _ViewProfileScreenState extends State<ViewUnregisteredUser> {
     }).whenComplete(() {
       if (provider.userModel.is_subscription_active == null ||
           provider.userModel.is_subscription_active == false) {
-        InterstitialScreen().showAds();
+        LoadAfterThreeVisit().loadAds(context);
+        // InterstitialScreen().showAds();
       }
     });
   }
@@ -1280,8 +1282,10 @@ class _ViewProfileScreenState extends State<ViewUnregisteredUser> {
               children: [
                 GestureDetector(
                   onTap: () {
-                    Get.to(() => ViewProfileScreen(
-                        id: list[index].reviewerId.toString()));
+                    if (model.user_nickname != "Anonymous") {
+                      Get.to(() => ViewProfileScreen(
+                          id: list[index].reviewerId.toString()));
+                    }
                   },
                   child: Row(
                     children: [
@@ -1292,38 +1296,40 @@ class _ViewProfileScreenState extends State<ViewUnregisteredUser> {
                         child: ClipOval(
                           child: SizedBox.fromSize(
                             size: Size.fromRadius(Get.height * 0.057),
-                            child: model.profileUrl == null ||
-                                    model.profileUrl ==
-                                        "https://via.placeholder.com/150"
+                            child: model.user_nickname == "Anonymous"
                                 ? Image.asset('images/aysha.png')
-                                : isBase64(model.profileUrl!)
-                                    ? Image.memory(
-                                        base64Decode(model.profileUrl!),
-                                        fit: BoxFit.cover)
-                                    : CachedNetworkImage(
-                                        imageUrl: model.profileUrl!,
-                                        fit: BoxFit.fill,
-                                        errorWidget: (context, url, error) =>
-                                            Image.asset('images/aysha.png'),
-                                        placeholder: (context, url) =>
-                                            const Center(
-                                          child: CircularProgressIndicator(
-                                              color: baseColor),
-                                        ),
-                                      ),
+                                : model.profileUrl == null ||
+                                        model.profileUrl ==
+                                            "https://via.placeholder.com/150"
+                                    ? Image.asset('images/aysha.png')
+                                    : isBase64(model.profileUrl!)
+                                        ? Image.memory(
+                                            base64Decode(model.profileUrl!),
+                                            fit: BoxFit.cover)
+                                        : CachedNetworkImage(
+                                            imageUrl: model.profileUrl!,
+                                            fit: BoxFit.fill,
+                                            errorWidget: (context, url,
+                                                    error) =>
+                                                Image.asset('images/aysha.png'),
+                                            placeholder: (context, url) =>
+                                                const Center(
+                                              child: CircularProgressIndicator(
+                                                  color: baseColor),
+                                            ),
+                                          ),
                           ),
                         ),
                       ),
                       Expanded(
                         child: ListTile(
                           title: Text(
-                            provider.userModel.is_subscription_active ==
-                                        false &&
-                                    provider.userModel.is_subscription_active !=
-                                        null
+                            /* provider.userModel.is_subscription_active != null &&
+                                    provider.userModel.is_subscription_active ==
+                                        false
                                 ? "Anonymous"
-                                :
-                                /* provider.userModel.is_subscription_active == true &&
+                                : */
+                            /* provider.userModel.is_subscription_active == true &&
                                     (provider.userModel
                                             .active_subscription_plan_name!
                                             .contains("god") ||
@@ -1331,7 +1337,7 @@ class _ViewProfileScreenState extends State<ViewUnregisteredUser> {
                                             .active_subscription_plan_name!
                                             .contains("king"))
                                 ? */
-                                model.user_nickname ?? "" /* : "Anonymous" */,
+                            model.user_nickname ?? "" /* : "Anonymous" */,
                             style: const TextStyle(fontSize: 12),
                           ),
                           subtitle: Text(
@@ -1927,7 +1933,26 @@ class _ViewProfileScreenState extends State<ViewUnregisteredUser> {
     );
   }
 
+  bool containsNumber(String s) {
+    return s.contains(RegExp(r'\d'));
+  }
+
   Widget headerWidget(UnregisteredUserModel model) {
+    String countryCode = '';
+    if (model.data!.code != null) {
+      if (model.data!.number!.contains("*") ||
+          model.data!.number!.contains("#")) {
+        countryCode = "";
+      } else {
+        if (containsNumber(model.data!.code ?? "")) {
+          countryCode = model.data!.code ?? "";
+        } else {
+          countryCode =
+              "+${CountryPickerUtils.getCountryByIsoCode(model.data!.code ?? "").phoneCode.toLowerCase()}";
+        }
+      }
+    }
+
     return Column(
       children: [
         ShapeOfView(
@@ -1990,7 +2015,7 @@ class _ViewProfileScreenState extends State<ViewUnregisteredUser> {
                 NicknameUnRegisteredView(nickName: nickNameList),
                 UIHelper.verticalSpaceSm,
                 CallNumberView(
-                  phoneNumber: model.data!.number,
+                  phoneNumber: "$countryCode${model.data!.number}",
                 ),
                 headerWithEdit(
                     label: "Profession".tr,

@@ -55,9 +55,9 @@ class _InternetCheckState extends State<InternetCheck> {
           padding: const EdgeInsets.all(20.0),
           child: CustomButton(
             () async {
-              if (await InternetConnectionCheckerPlus().hasConnection) {
+              /* if (await InternetConnectionCheckerPlus().hasConnection) {
                 Get.back();
-              }
+              } */
             },
             text: 'Retry',
             textcolor: whiteColor,

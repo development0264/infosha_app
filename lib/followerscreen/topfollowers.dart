@@ -37,19 +37,6 @@ class _TopFollowersScreenState extends State<TopFollowersScreen> {
 
     Provider.of<TopFollowVisitorModel>(context, listen: false).setInit();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (provider.topFollowersModel.data != null &&
-          provider.topFollowersModel.data!.isNotEmpty) {
-        for (var data in provider.topFollowersModel.data!) {
-          precacheImage(NetworkImage(data.profile ?? ""), context);
-        }
-      }
-
-      if (provider.topVisitorsModel.data != null &&
-          provider.topVisitorsModel.data!.isNotEmpty) {
-        for (var data in provider.topVisitorsModel.data!) {
-          precacheImage(NetworkImage(data.profile ?? ""), context);
-        }
-      }
       showAdsDialog();
     });
     super.initState();
@@ -110,6 +97,27 @@ class _TopFollowersScreenState extends State<TopFollowersScreen> {
         ),
         body: Consumer<TopFollowVisitorModel>(
             builder: (context, provider, child) {
+          if (provider.topFollowersModel.data != null &&
+              provider.topFollowersModel.data!.isNotEmpty) {
+            for (var data in provider.topFollowersModel.data!) {
+              precacheImage(
+                  CachedNetworkImageProvider(
+                    data.profile ?? "",
+                  ),
+                  context);
+            }
+          }
+
+          if (provider.topVisitorsModel.data != null &&
+              provider.topVisitorsModel.data!.isNotEmpty) {
+            for (var data in provider.topVisitorsModel.data!) {
+              precacheImage(
+                  CachedNetworkImageProvider(
+                    data.profile ?? "",
+                  ),
+                  context);
+            }
+          }
           return DefaultTabController(
             initialIndex: index,
             length: 2,
@@ -146,10 +154,10 @@ class _TopFollowersScreenState extends State<TopFollowersScreen> {
                             Text(
                               "Most Followers".tr,
                             ),
-                            /* Text(
+                            Text(
                               "Most Visited".tr,
-                            ), */
-                            Row(
+                            ),
+                            /* Row(
                               mainAxisSize: MainAxisSize.min,
                               children: [
                                 Text(
@@ -185,7 +193,7 @@ class _TopFollowersScreenState extends State<TopFollowersScreen> {
                                       color: Colors.grey.shade600),
                                 ),
                               ],
-                            ),
+                            ), */
                           ],
                         ),
                       ),
@@ -969,12 +977,12 @@ class _TopFollowersScreenState extends State<TopFollowersScreen> {
   filterTag() {
     return SizedBox(
       height: Get.height * 0.052,
-      child: ListView(
-        shrinkWrap: true,
-        scrollDirection: Axis.horizontal,
+      child: Row(
+        // shrinkWrap: true,
+        // scrollDirection: Axis.horizontal,
         children: [
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 5),
+            padding: const EdgeInsets.symmetric(horizontal: 10),
             child: Container(
                 padding: const EdgeInsets.symmetric(horizontal: 5),
                 height: Get.height * 0.052,
@@ -1089,7 +1097,7 @@ class _TopFollowersScreenState extends State<TopFollowersScreen> {
               ),
             ),
           ),
-          Padding(
+          /* Padding(
             padding: const EdgeInsets.symmetric(horizontal: 5),
             child: Container(
                 padding: const EdgeInsets.symmetric(horizontal: 5),
@@ -1142,7 +1150,7 @@ class _TopFollowersScreenState extends State<TopFollowersScreen> {
                     ],
                   ),
                 )),
-          ),
+          ), */
         ],
       ),
     );

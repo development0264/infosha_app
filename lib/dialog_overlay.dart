@@ -299,245 +299,268 @@ class _TrueCallerOverlayState extends State<TrueCallerOverlay> {
 
   @override
   Widget build(BuildContext context) {
-    return ErrorBoundary(
-      child: Scaffold(
-        backgroundColor: Colors.transparent,
-        body: Center(
-          child: Container(
-            height: 450,
-            // height: Get.height * 0.4,
-            width: Get.width,
-            padding: const EdgeInsets.only(bottom: 20),
-            decoration: BoxDecoration(
-              gradient: const LinearGradient(
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                  colors: [
-                    Color(0xFF0F296D),
-                    Color(0xFF0F296D),
-                    Color(0xFF004683),
-                    Color(0xFF006599),
-                    Color(0xFF007CA9),
-                    Color(0xFF009EC4),
-                  ]),
-              borderRadius: BorderRadius.circular(12.0),
-            ),
-            child: isIncomingCall == true
-                ? Stack(
-                    children: [
-                      const Center(
-                        child: CircularProgressIndicator(color: baseColor),
-                      ),
-                      Positioned(
-                        top: 0,
-                        right: 0,
-                        child: IconButton(
-                          onPressed: () async {
-                            await SystemAlertWindow.closeSystemWindow(
-                                prefMode: SystemWindowPrefMode.OVERLAY);
-                            await SystemAlertWindow.sendMessageToOverlay(
-                                "null");
-                            /* await FlutterOverlayWindow.closeOverlay();
-                            await FlutterOverlayWindow.shareData("null"); */
-                          },
-                          icon: const Icon(
-                            Icons.close,
-                            color: Colors.white,
-                          ),
+    return Scaffold(
+      backgroundColor: Colors.transparent,
+      body: Center(
+        child: Container(
+          height: 450,
+          // height: Get.height * 0.4,
+          width: Get.width,
+          padding: const EdgeInsets.only(bottom: 20),
+          decoration: BoxDecoration(
+            gradient: const LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: [
+                  Color(0xFF0F296D),
+                  Color(0xFF0F296D),
+                  Color(0xFF004683),
+                  Color(0xFF006599),
+                  Color(0xFF007CA9),
+                  Color(0xFF009EC4),
+                ]),
+            borderRadius: BorderRadius.circular(12.0),
+          ),
+          child: isIncomingCall == true
+              ? Stack(
+                  children: [
+                    const Center(
+                      child: CircularProgressIndicator(color: baseColor),
+                    ),
+                    Positioned(
+                      top: 0,
+                      right: 0,
+                      child: IconButton(
+                        onPressed: () async {
+                          await SystemAlertWindow.closeSystemWindow(
+                              prefMode: SystemWindowPrefMode.OVERLAY);
+                          await SystemAlertWindow.sendMessageToOverlay("null");
+                          /* await FlutterOverlayWindow.closeOverlay();
+                          await FlutterOverlayWindow.shareData("null"); */
+                        },
+                        icon: const Icon(
+                          Icons.close,
+                          color: Colors.white,
                         ),
                       ),
-                    ],
-                  )
-                : Stack(
-                    children: [
-                      incomingCallModel.data == null
-                          ? Align(
-                              alignment: Alignment.center,
-                              child: Row(
-                                children: [
-                                  Container(
-                                    margin: const EdgeInsets.all(5),
-                                    width: Get.width * 0.25,
-                                    height: Get.height * 0.2,
-                                    child: ClipRRect(
-                                      borderRadius: BorderRadius.circular(50),
-                                      child: Image.asset('images/aysha.png'),
-                                    ),
+                    ),
+                  ],
+                )
+              : Stack(
+                  children: [
+                    incomingCallModel.data == null
+                        ? Align(
+                            alignment: Alignment.center,
+                            child: Row(
+                              children: [
+                                Container(
+                                  margin: const EdgeInsets.all(5),
+                                  width: Get.width * 0.25,
+                                  height: Get.height * 0.2,
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(50),
+                                    child: Image.asset('images/aysha.png'),
                                   ),
-                                  Expanded(
-                                    child: ListTile(
-                                        title: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          mainAxisSize: MainAxisSize.min,
-                                          children: [
-                                            Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              children: [
-                                                SizedBox(
-                                                  width: Get.width * 0.35,
-                                                  child: const Text(
-                                                    "anonymous",
-                                                    style: TextStyle(
-                                                        fontSize: 16,
-                                                        color: Colors.white,
-                                                        fontWeight:
-                                                            FontWeight.bold),
+                                ),
+                                Expanded(
+                                  child: ListTile(
+                                      title: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              SizedBox(
+                                                width: Get.width * 0.35,
+                                                child: const Text(
+                                                  "anonymous",
+                                                  style: TextStyle(
+                                                      fontSize: 16,
+                                                      color: Colors.white,
+                                                      fontWeight:
+                                                          FontWeight.bold),
+                                                ),
+                                              ),
+                                              MyCustomRatingView(
+                                                starSize: 12.0,
+                                                fontcolor: Colors.white,
+                                                ratinigValue: 0,
+                                              ),
+                                            ],
+                                          ),
+                                          SizedBox(height: Get.height * 0.006),
+                                        ],
+                                      ),
+                                      subtitle: Text(
+                                        number,
+                                        style: const TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 15,
+                                            fontWeight: FontWeight.w500),
+                                      )),
+                                ),
+                              ],
+                            ),
+                          )
+                        : GestureDetector(
+                            onTap: () async {},
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 5, vertical: 5),
+                                  child: Row(
+                                    children: [
+                                      Container(
+                                        margin: const EdgeInsets.all(5),
+                                        width: Get.width * 0.25,
+                                        height: Get.height * 0.2,
+                                        child: ClipRRect(
+                                          borderRadius:
+                                              BorderRadius.circular(50),
+                                          child: incomingCallModel
+                                                          .data!.photo ==
+                                                      null ||
+                                                  incomingCallModel
+                                                          .data!.photo ==
+                                                      ""
+                                              ? CircleAvatar(
+                                                  radius: 22,
+                                                  backgroundColor: Colors.white,
+                                                  child: CustomText(
+                                                    text: UIHelper.getShortName(
+                                                        string:
+                                                            incomingCallModel
+                                                                    .data!
+                                                                    .name ??
+                                                                "",
+                                                        limitTo: 2),
+                                                    fontSize: 20.0,
+                                                    color: baseColor,
+                                                    weight: fontWeightMedium,
                                                   ),
-                                                ),
-                                                MyCustomRatingView(
-                                                  starSize: 12.0,
-                                                  fontcolor: Colors.white,
-                                                  ratinigValue: 0,
-                                                ),
-                                              ],
-                                            ),
-                                            SizedBox(
-                                                height: Get.height * 0.006),
-                                          ],
-                                        ),
-                                        subtitle: Text(
-                                          number,
-                                          style: const TextStyle(
-                                              color: Colors.white,
-                                              fontSize: 15,
-                                              fontWeight: FontWeight.w500),
-                                        )),
-                                  ),
-                                ],
-                              ),
-                            )
-                          : GestureDetector(
-                              onTap: () async {},
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 5, vertical: 5),
-                                    child: Row(
-                                      children: [
-                                        Container(
-                                          margin: const EdgeInsets.all(5),
-                                          width: Get.width * 0.25,
-                                          height: Get.height * 0.2,
-                                          child: ClipRRect(
-                                            borderRadius:
-                                                BorderRadius.circular(50),
-                                            child: incomingCallModel
-                                                            .data!.photo ==
-                                                        null ||
-                                                    incomingCallModel
-                                                            .data!.photo ==
-                                                        ""
-                                                ? CircleAvatar(
-                                                    radius: 22,
-                                                    backgroundColor:
-                                                        Colors.white,
-                                                    child: CustomText(
-                                                      text: UIHelper.getShortName(
-                                                          string:
-                                                              incomingCallModel
-                                                                      .data!
-                                                                      .name ??
-                                                                  "",
-                                                          limitTo: 2),
-                                                      fontSize: 20.0,
-                                                      color: baseColor,
-                                                      weight: fontWeightMedium,
-                                                    ),
-                                                  )
-                                                : isBase64(incomingCallModel
-                                                        .data!.photo!)
-                                                    ? Image.memory(
-                                                        base64Decode(
-                                                            incomingCallModel
-                                                                .data!.photo!),
-                                                        fit: BoxFit.cover)
-                                                    : CachedNetworkImage(
-                                                        imageUrl:
-                                                            incomingCallModel
-                                                                .data!.photo!,
-                                                        fit: BoxFit.fill,
-                                                        errorWidget: (context,
-                                                                url, error) =>
-                                                            CircleAvatar(
-                                                          radius: 22,
-                                                          backgroundColor:
-                                                              Colors.white,
-                                                          child: CustomText(
-                                                            text: UIHelper.getShortName(
-                                                                string: incomingCallModel
-                                                                        .data!
-                                                                        .name ??
-                                                                    "",
-                                                                limitTo: 2),
-                                                            fontSize: 20.0,
-                                                            color: baseColor,
-                                                            weight:
-                                                                fontWeightMedium,
-                                                          ),
-                                                        ),
-                                                        placeholder:
-                                                            (context, url) =>
-                                                                const Center(
-                                                          child:
-                                                              CircularProgressIndicator(
-                                                                  color:
-                                                                      baseColor),
+                                                )
+                                              : isBase64(incomingCallModel
+                                                      .data!.photo!)
+                                                  ? Image.memory(
+                                                      base64Decode(
+                                                          incomingCallModel
+                                                              .data!.photo!),
+                                                      fit: BoxFit.cover)
+                                                  : CachedNetworkImage(
+                                                      imageUrl:
+                                                          incomingCallModel
+                                                              .data!.photo!,
+                                                      fit: BoxFit.fill,
+                                                      errorWidget: (context,
+                                                              url, error) =>
+                                                          CircleAvatar(
+                                                        radius: 22,
+                                                        backgroundColor:
+                                                            Colors.white,
+                                                        child: CustomText(
+                                                          text: UIHelper.getShortName(
+                                                              string:
+                                                                  incomingCallModel
+                                                                          .data!
+                                                                          .name ??
+                                                                      "",
+                                                              limitTo: 2),
+                                                          fontSize: 20.0,
+                                                          color: baseColor,
+                                                          weight:
+                                                              fontWeightMedium,
                                                         ),
                                                       ),
-                                          ),
-                                        ),
-                                        Expanded(
-                                          child: ListTile(
-                                              dense: true,
-                                              visualDensity:
-                                                  const VisualDensity(
-                                                      vertical: 4),
-                                              title: Column(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                children: [
-                                                  SizedBox(
-                                                    width: Get.width * 0.63,
-                                                    child: Text(
-                                                      incomingCallModel.data!
-                                                                  .user_profession !=
-                                                              null
-                                                          ? incomingCallModel
-                                                                  .data!
-                                                                  .user_profession ??
-                                                              ""
-                                                          : incomingCallModel
-                                                                  .data!
-                                                                  .profession!
-                                                                  .isNotEmpty
-                                                              ? mostUsedProfession
-                                                              : "",
-                                                      style: const TextStyle(
-                                                          fontSize: 14,
-                                                          color: Colors.white),
+                                                      placeholder:
+                                                          (context, url) =>
+                                                              const Center(
+                                                        child:
+                                                            CircularProgressIndicator(
+                                                                color:
+                                                                    baseColor),
+                                                      ),
                                                     ),
+                                        ),
+                                      ),
+                                      Expanded(
+                                        child: ListTile(
+                                            dense: true,
+                                            visualDensity: const VisualDensity(
+                                                vertical: 4),
+                                            title: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                SizedBox(
+                                                  width: Get.width * 0.63,
+                                                  child: Text(
+                                                    incomingCallModel.data!
+                                                                .user_profession !=
+                                                            null
+                                                        ? incomingCallModel
+                                                                .data!
+                                                                .user_profession ??
+                                                            ""
+                                                        : incomingCallModel
+                                                                .data!
+                                                                .profession!
+                                                                .isNotEmpty
+                                                            ? mostUsedProfession
+                                                            : "",
+                                                    style: const TextStyle(
+                                                        fontSize: 14,
+                                                        color: Colors.white),
                                                   ),
+                                                ),
+                                                SizedBox(
+                                                    height: Get.height * 0.01),
+                                                if (mostUsedName != "" &&
+                                                    mostUsedName
+                                                            .contains(";") ==
+                                                        false) ...[
                                                   SizedBox(
-                                                      height:
-                                                          Get.height * 0.01),
-                                                  if (mostUsedName != "" &&
+                                                    width: Get.width * 0.58,
+                                                    child: Text(
                                                       mostUsedName
-                                                              .contains(";") ==
-                                                          false) ...[
+                                                          .toLowerCase(),
+                                                      maxLines: 2,
+                                                      overflow:
+                                                          TextOverflow.ellipsis,
+                                                      style: TextStyle(
+                                                          fontSize:
+                                                              Get.width * 0.04,
+                                                          color: Colors.white,
+                                                          fontWeight:
+                                                              FontWeight.bold),
+                                                    ),
+                                                  )
+                                                ],
+                                                SizedBox(
+                                                    height: Get.height * 0.01),
+                                                Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceBetween,
+                                                  children: [
                                                     SizedBox(
-                                                      width: Get.width * 0.58,
+                                                      width: Get.width * 0.41,
                                                       child: Text(
-                                                        mostUsedName
-                                                            .toLowerCase(),
-                                                        maxLines: 2,
+                                                        allNames
+                                                            .join(', ')
+                                                            .toLowerCase()
+                                                        /* lastFiveNames
+                                                          .join(', ')
+                                                          .toLowerCase() */
+                                                        ,
+                                                        maxLines: 10,
                                                         overflow: TextOverflow
                                                             .ellipsis,
                                                         style: TextStyle(
@@ -549,317 +572,278 @@ class _TrueCallerOverlayState extends State<TrueCallerOverlay> {
                                                                 FontWeight
                                                                     .bold),
                                                       ),
-                                                    )
-                                                  ],
-                                                  SizedBox(
-                                                      height:
-                                                          Get.height * 0.01),
-                                                  Row(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .spaceBetween,
-                                                    children: [
-                                                      SizedBox(
-                                                        width: Get.width * 0.41,
-                                                        child: Text(
-                                                          allNames
-                                                              .join(', ')
-                                                              .toLowerCase()
-                                                          /* lastFiveNames
-                                                            .join(', ')
-                                                            .toLowerCase() */
-                                                          ,
-                                                          maxLines: 10,
-                                                          overflow: TextOverflow
-                                                              .ellipsis,
-                                                          style: TextStyle(
-                                                              fontSize:
-                                                                  Get.width *
-                                                                      0.04,
+                                                    ),
+                                                    Column(
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .end,
+                                                      children: [
+                                                        MyCustomRatingView(
+                                                          starSize: 12.0,
+                                                          fontcolor:
+                                                              Colors.white,
+                                                          ratinigValue: incomingCallModel
+                                                                      .data!
+                                                                      .averageReview !=
+                                                                  null
+                                                              ? double.parse(incomingCallModel
+                                                                          .data!
+                                                                          .averageReview !=
+                                                                      null
+                                                                  ? incomingCallModel
+                                                                      .data!
+                                                                      .averageReview
+                                                                      .toString()
+                                                                  : "0")
+                                                              : 0,
+                                                        ),
+                                                        const SizedBox(
+                                                            height: 20),
+                                                        PopupMenuButton(
+                                                          constraints:
+                                                              BoxConstraints(
+                                                                  maxHeight:
+                                                                      Get.height *
+                                                                          0.6,
+                                                                  maxWidth:
+                                                                      Get.width *
+                                                                          0.7,
+                                                                  minWidth:
+                                                                      Get.width *
+                                                                          0.4),
+                                                          position:
+                                                              PopupMenuPosition
+                                                                  .under,
+                                                          child: const Padding(
+                                                            padding:
+                                                                EdgeInsets.only(
+                                                                    right: 10),
+                                                            child: Icon(
+                                                              Icons.more_vert,
                                                               color:
                                                                   Colors.white,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .bold),
-                                                        ),
-                                                      ),
-                                                      Column(
-                                                        crossAxisAlignment:
-                                                            CrossAxisAlignment
-                                                                .end,
-                                                        children: [
-                                                          MyCustomRatingView(
-                                                            starSize: 12.0,
-                                                            fontcolor:
-                                                                Colors.white,
-                                                            ratinigValue: incomingCallModel
-                                                                        .data!
-                                                                        .averageReview !=
-                                                                    null
-                                                                ? double.parse(incomingCallModel
-                                                                            .data!
-                                                                            .averageReview !=
-                                                                        null
-                                                                    ? incomingCallModel
-                                                                        .data!
-                                                                        .averageReview
-                                                                        .toString()
-                                                                    : "0")
-                                                                : 0,
+                                                              weight: 20,
+                                                            ),
                                                           ),
-                                                          const SizedBox(
-                                                              height: 20),
-                                                          PopupMenuButton(
-                                                            constraints: BoxConstraints(
-                                                                maxHeight:
-                                                                    Get.height *
-                                                                        0.6,
-                                                                maxWidth:
-                                                                    Get.width *
-                                                                        0.7,
-                                                                minWidth:
-                                                                    Get.width *
-                                                                        0.4),
-                                                            position:
-                                                                PopupMenuPosition
-                                                                    .under,
-                                                            child:
-                                                                const Padding(
-                                                              padding: EdgeInsets
-                                                                  .only(
-                                                                      right:
-                                                                          10),
-                                                              child: Icon(
-                                                                Icons.more_vert,
-                                                                color: Colors
-                                                                    .white,
-                                                                weight: 20,
+                                                          itemBuilder:
+                                                              (context) {
+                                                            return [
+                                                              PopupMenuItem(
+                                                                child: ListTile(
+                                                                  visualDensity:
+                                                                      const VisualDensity(
+                                                                          vertical:
+                                                                              -4),
+                                                                  contentPadding:
+                                                                      EdgeInsets
+                                                                          .zero,
+                                                                  leading:
+                                                                      const Icon(
+                                                                          Icons
+                                                                              .notification_important_outlined),
+                                                                  title: Text(
+                                                                      "Spam"
+                                                                          .tr),
+                                                                ),
+                                                                onTap: () {
+                                                                  spamUser(
+                                                                      number);
+                                                                },
+                                                              ),
+                                                            ];
+                                                          },
+                                                        )
+                                                        /* ElevatedButton(
+                                                          style: ButtonStyle(
+                                                            backgroundColor:
+                                                                const MaterialStatePropertyAll(
+                                                              baseColor,
+                                                            ),
+                                                            shape:
+                                                                MaterialStatePropertyAll(
+                                                              RoundedRectangleBorder(
+                                                                borderRadius:
+                                                                    BorderRadius
+                                                                        .circular(20),
                                                               ),
                                                             ),
-                                                            itemBuilder:
-                                                                (context) {
-                                                              return [
-                                                                PopupMenuItem(
-                                                                  child:
-                                                                      ListTile(
-                                                                    visualDensity:
-                                                                        const VisualDensity(
-                                                                            vertical:
-                                                                                -4),
-                                                                    contentPadding:
-                                                                        EdgeInsets
-                                                                            .zero,
-                                                                    leading:
-                                                                        const Icon(
-                                                                            Icons.notification_important_outlined),
-                                                                    title: Text(
-                                                                        "Spam"
-                                                                            .tr),
-                                                                  ),
-                                                                  onTap: () {
-                                                                    spamUser(
-                                                                        number);
-                                                                  },
-                                                                ),
-                                                              ];
-                                                            },
-                                                          )
-                                                          /* ElevatedButton(
-                                                            style: ButtonStyle(
-                                                              backgroundColor:
-                                                                  const MaterialStatePropertyAll(
-                                                                baseColor,
-                                                              ),
-                                                              shape:
-                                                                  MaterialStatePropertyAll(
-                                                                RoundedRectangleBorder(
-                                                                  borderRadius:
-                                                                      BorderRadius
-                                                                          .circular(20),
-                                                                ),
-                                                              ),
-                                                            ),
-                                                            onPressed: () {
-                                                              spamUser(number);
-                                                            },
-                                                            child: Text(
-                                                              'Spam'.tr,
-                                                              style: const TextStyle(
-                                                                  color: Colors.white),
-                                                            )) */
-                                                        ],
-                                                      ),
-                                                    ],
-                                                  ),
-                                                  SizedBox(
-                                                      height:
-                                                          Get.height * 0.006),
-                                                ],
-                                              ),
-                                              subtitle: Text(
+                                                          ),
+                                                          onPressed: () {
+                                                            spamUser(number);
+                                                          },
+                                                          child: Text(
+                                                            'Spam'.tr,
+                                                            style: const TextStyle(
+                                                                color: Colors.white),
+                                                          )) */
+                                                      ],
+                                                    ),
+                                                  ],
+                                                ),
+                                                SizedBox(
+                                                    height: Get.height * 0.006),
+                                              ],
+                                            ),
+                                            subtitle: Text(
+                                              incomingCallModel.data!.number ??
+                                                  number,
+                                              style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: Get.width * 0.045,
+                                                  fontWeight: FontWeight.w500),
+                                            ),
+                                            contentPadding: EdgeInsets.zero),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                if (incomingCallModel.data!.getAddress !=
+                                        null &&
+                                    incomingCallModel
+                                        .data!.getAddress!.isNotEmpty) ...[
+                                  Padding(
+                                    padding:
+                                        EdgeInsets.only(left: Get.width * 0.2),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      children: [
+                                        Row(
+                                          children: [
+                                            Text(
+                                              incomingCallModel
+                                                              .data!
+                                                              .getAddress![0]
+                                                              .address!
+                                                              .city !=
+                                                          null &&
+                                                      incomingCallModel
+                                                              .data!
+                                                              .getAddress![0]
+                                                              .address!
+                                                              .city !=
+                                                          ""
+                                                  ? "${incomingCallModel.data!.getAddress![0].address!.city},"
+                                                  : "",
+                                              style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: Get.width * 0.03),
+                                            ),
+                                            Text(
+                                              incomingCallModel
+                                                              .data!
+                                                              .getAddress![0]
+                                                              .address!
+                                                              .country !=
+                                                          null &&
+                                                      incomingCallModel
+                                                              .data!
+                                                              .getAddress![0]
+                                                              .address!
+                                                              .country !=
+                                                          ""
+                                                  ? " ${incomingCallModel.data!.getAddress![0].address!.country},"
+                                                  : "",
+                                              style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: Get.width * 0.03),
+                                            ),
+                                            const SizedBox(width: 5),
+                                            if (incomingCallModel
+                                                        .data!
+                                                        .getAddress![0]
+                                                        .address!
+                                                        .country !=
+                                                    null &&
                                                 incomingCallModel
-                                                        .data!.number ??
-                                                    number,
-                                                style: TextStyle(
-                                                    color: Colors.white,
-                                                    fontSize: Get.width * 0.045,
-                                                    fontWeight:
-                                                        FontWeight.w500),
-                                              ),
-                                              contentPadding: EdgeInsets.zero),
+                                                        .data!
+                                                        .getAddress![0]
+                                                        .address!
+                                                        .country !=
+                                                    "") ...[
+                                              SizedBox(
+                                                height: Get.height * 0.015,
+                                                width: Get.width * 0.05,
+                                                child: CountryPickerUtils
+                                                    .getDefaultFlagImage(
+                                                        CountryPickerUtils
+                                                            .getCountryByName(
+                                                                incomingCallModel
+                                                                    .data!
+                                                                    .getAddress![
+                                                                        0]
+                                                                    .address!
+                                                                    .country!)),
+                                              )
+                                            ],
+                                          ],
+                                        ),
+                                        Text(
+                                          incomingCallModel.data!.getDob![0]
+                                                          .dob !=
+                                                      null &&
+                                                  incomingCallModel.data!
+                                                          .getDob![0].dob !=
+                                                      ""
+                                              ? "DOB: ${incomingCallModel.data!.getDob![0].dob}"
+                                              : "",
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: Get.width * 0.03),
                                         ),
                                       ],
                                     ),
-                                  ),
-                                  if (incomingCallModel.data!.getAddress !=
-                                          null &&
-                                      incomingCallModel
-                                          .data!.getAddress!.isNotEmpty) ...[
-                                    Padding(
-                                      padding: EdgeInsets.only(
-                                          left: Get.width * 0.2),
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.start,
-                                        children: [
-                                          Row(
-                                            children: [
-                                              Text(
-                                                incomingCallModel
-                                                                .data!
-                                                                .getAddress![0]
-                                                                .address!
-                                                                .city !=
-                                                            null &&
-                                                        incomingCallModel
-                                                                .data!
-                                                                .getAddress![0]
-                                                                .address!
-                                                                .city !=
-                                                            ""
-                                                    ? "${incomingCallModel.data!.getAddress![0].address!.city},"
-                                                    : "",
-                                                style: TextStyle(
-                                                    color: Colors.white,
-                                                    fontSize: Get.width * 0.03),
-                                              ),
-                                              Text(
-                                                incomingCallModel
-                                                                .data!
-                                                                .getAddress![0]
-                                                                .address!
-                                                                .country !=
-                                                            null &&
-                                                        incomingCallModel
-                                                                .data!
-                                                                .getAddress![0]
-                                                                .address!
-                                                                .country !=
-                                                            ""
-                                                    ? " ${incomingCallModel.data!.getAddress![0].address!.country},"
-                                                    : "",
-                                                style: TextStyle(
-                                                    color: Colors.white,
-                                                    fontSize: Get.width * 0.03),
-                                              ),
-                                              const SizedBox(width: 5),
-                                              if (incomingCallModel
-                                                          .data!
-                                                          .getAddress![0]
-                                                          .address!
-                                                          .country !=
-                                                      null &&
-                                                  incomingCallModel
-                                                          .data!
-                                                          .getAddress![0]
-                                                          .address!
-                                                          .country !=
-                                                      "") ...[
-                                                SizedBox(
-                                                  height: Get.height * 0.015,
-                                                  width: Get.width * 0.05,
-                                                  child: CountryPickerUtils
-                                                      .getDefaultFlagImage(
-                                                          CountryPickerUtils
-                                                              .getCountryByName(
-                                                                  incomingCallModel
-                                                                      .data!
-                                                                      .getAddress![
-                                                                          0]
-                                                                      .address!
-                                                                      .country!)),
-                                                )
-                                              ],
-                                            ],
-                                          ),
-                                          Text(
-                                            incomingCallModel.data!.getDob![0]
-                                                            .dob !=
-                                                        null &&
-                                                    incomingCallModel.data!
-                                                            .getDob![0].dob !=
-                                                        ""
-                                                ? "DOB: ${incomingCallModel.data!.getDob![0].dob}"
-                                                : "",
-                                            style: TextStyle(
-                                                color: Colors.white,
-                                                fontSize: Get.width * 0.03),
-                                          ),
-                                        ],
-                                      ),
-                                    )
-                                  ],
-                                  SizedBox(height: Get.height * 0.01),
-                                  if (incomingCallModel.data!.reviews != null &&
-                                      incomingCallModel
-                                          .data!.reviews!.isNotEmpty) ...[
-                                    TitledContainer(
-                                      titleText:
-                                          "Comment by ${incomingCallModel.data!.reviews![0].nicknames ?? ""}",
-                                      child: Center(
-                                        child: Text(
-                                          incomingCallModel
-                                                  .data!.reviews![0].comment ??
-                                              "",
-                                          style: TextStyle(
-                                              color: Colors.white,
-                                              fontSize: Get.width * 0.035),
-                                        ),
-                                      ),
-                                    )
-                                  ],
+                                  )
                                 ],
-                              ),
+                                SizedBox(height: Get.height * 0.01),
+                                if (incomingCallModel.data!.reviews != null &&
+                                    incomingCallModel
+                                        .data!.reviews!.isNotEmpty) ...[
+                                  TitledContainer(
+                                    titleText:
+                                        "Comment by ${incomingCallModel.data!.reviews![0].nicknames ?? ""}",
+                                    child: Center(
+                                      child: Text(
+                                        incomingCallModel
+                                                .data!.reviews![0].comment ??
+                                            "",
+                                        style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: Get.width * 0.035),
+                                      ),
+                                    ),
+                                  )
+                                ],
+                              ],
                             ),
-                      if (isGod == false &&
-                          (incomingCallModel.data != null &&
-                              incomingCallModel.data!.isLocked != null &&
-                              incomingCallModel.data!.isLocked == true)) ...[
-                        lockedProfile()
-                      ],
-                      Positioned(
-                        top: 0,
-                        right: 0,
-                        child: IconButton(
-                          onPressed: () async {
-                            await SystemAlertWindow.closeSystemWindow(
-                                prefMode: SystemWindowPrefMode.OVERLAY);
-                            await SystemAlertWindow.sendMessageToOverlay(
-                                "null");
-                            // await FlutterOverlayWindow.closeOverlay();
-                            // await FlutterOverlayWindow.shareData("null");
-                          },
-                          icon: const Icon(
-                            Icons.close,
-                            color: Colors.white,
                           ),
+                    if (isGod == false &&
+                        (incomingCallModel.data != null &&
+                            incomingCallModel.data!.isLocked != null &&
+                            incomingCallModel.data!.isLocked == true)) ...[
+                      lockedProfile()
+                    ],
+                    Positioned(
+                      top: 0,
+                      right: 0,
+                      child: IconButton(
+                        onPressed: () async {
+                          await SystemAlertWindow.closeSystemWindow(
+                              prefMode: SystemWindowPrefMode.OVERLAY);
+                          await SystemAlertWindow.sendMessageToOverlay("null");
+                          // await FlutterOverlayWindow.closeOverlay();
+                          // await FlutterOverlayWindow.shareData("null");
+                        },
+                        icon: const Icon(
+                          Icons.close,
+                          color: Colors.white,
                         ),
                       ),
-                    ],
-                  ),
-          ),
+                    ),
+                  ],
+                ),
         ),
       ),
     );

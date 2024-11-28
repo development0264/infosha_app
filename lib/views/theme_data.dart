@@ -5,7 +5,7 @@ import 'colors.dart';
 
 class Themes {
   static final light = ThemeData.light().copyWith(
-      backgroundColor: Colors.white,
+      scaffoldBackgroundColor: Colors.white,
       cardColor: Colors.white,
       primaryColor: Colors.black,
       dividerColor: Colors.black,
@@ -16,7 +16,7 @@ class Themes {
           // Theme.of(context).textTheme,
           ));
   static final dark = ThemeData.dark().copyWith(
-      backgroundColor: backGroundColor,
+      scaffoldBackgroundColor: backGroundColor,
       cardColor: bgColor,
       dividerColor: Colors.white,
       floatingActionButtonTheme:

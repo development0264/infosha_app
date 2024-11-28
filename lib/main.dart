@@ -212,7 +212,7 @@ Future<void> main() async {
 
   DarwinInitializationSettings initializationSettingsDarwin =
       const DarwinInitializationSettings(
-          onDidReceiveLocalNotification: onDidReceiveLocalNotification);
+          /* onDidReceiveLocalNotification: onDidReceiveLocalNotification */);
 
   LinuxInitializationSettings initializationSettingsLinux =
       const LinuxInitializationSettings(defaultActionName: 'Open notification');

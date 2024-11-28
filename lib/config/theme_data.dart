@@ -4,7 +4,7 @@ import '../views/colors.dart';
 
 class Themes {
   static final light = ThemeData.light().copyWith(
-    backgroundColor: Colors.white,
+    scaffoldBackgroundColor: Colors.white,
     cardColor: Color(0xE5E6EB).withOpacity(0.9),
     dividerColor: Colors.black,
     appBarTheme: AppBarTheme(
@@ -12,7 +12,7 @@ class Themes {
         iconTheme: IconThemeData(color: Colors.black)),
   );
   static final dark = ThemeData.dark().copyWith(
-      backgroundColor: backGroundColor,
+      scaffoldBackgroundColor: backGroundColor,
       cardColor: backGroundColor,
       dividerColor: Colors.white,
       appBarTheme: AppBarTheme(color: backGroundColor),

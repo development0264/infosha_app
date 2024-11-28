@@ -92,5 +92,4 @@ dependencies {
     implementation('com.google.android.exoplayer:exoplayer:2.19.1')
     implementation 'com.google.android.recaptcha:recaptcha:18.4.0'
     implementation "com.google.android.gms:play-services-location:17.0.0"
-
 }

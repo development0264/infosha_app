@@ -13,9 +13,13 @@ class LoadAfterThreeVisit {
 
   loadAds(BuildContext context) async {
     if (Provider.of<UserViewModel>(context, listen: false)
-            .userModel
-            .is_subscription_active ==
-        null) {
+                .userModel
+                .is_subscription_active ==
+            null ||
+        Provider.of<UserViewModel>(context, listen: false)
+                .userModel
+                .is_subscription_active ==
+            false) {
       _loadProfileVisitData();
       _incrementProfileVisit();
     }
@@ -53,5 +57,6 @@ class LoadAfterThreeVisit {
     } else {
       InterstitialScreen().showAds();
     }
+    print("profileVisitCount ===> $profileVisitCount");
   }
 }
