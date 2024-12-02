@@ -2270,7 +2270,7 @@ class _ViewProfileScreenState extends State<ViewProfileScreen> {
                 UIHelper.verticalSpaceSm,
                 CallNumberView(
                   phoneNumber:
-                      "${model.data!.countryCode ?? ""}${model.data!.number}",
+                      "${model.data!.countryCode ?? ""} ${model.data!.number}",
                 ),
                 headerWithEdit(
                     label: "Profession".tr,

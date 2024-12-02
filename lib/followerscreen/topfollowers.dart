@@ -97,7 +97,7 @@ class _TopFollowersScreenState extends State<TopFollowersScreen> {
         ),
         body: Consumer<TopFollowVisitorModel>(
             builder: (context, provider, child) {
-          if (provider.topFollowersModel.data != null &&
+          /* if (provider.topFollowersModel.data != null &&
               provider.topFollowersModel.data!.isNotEmpty) {
             for (var data in provider.topFollowersModel.data!) {
               precacheImage(
@@ -117,7 +117,7 @@ class _TopFollowersScreenState extends State<TopFollowersScreen> {
                   ),
                   context);
             }
-          }
+          } */
           return DefaultTabController(
             initialIndex: index,
             length: 2,

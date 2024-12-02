@@ -2015,7 +2015,7 @@ class _ViewProfileScreenState extends State<ViewUnregisteredUser> {
                 NicknameUnRegisteredView(nickName: nickNameList),
                 UIHelper.verticalSpaceSm,
                 CallNumberView(
-                  phoneNumber: "$countryCode${model.data!.number}",
+                  phoneNumber: "$countryCode ${model.data!.number}",
                 ),
                 headerWithEdit(
                     label: "Profession".tr,

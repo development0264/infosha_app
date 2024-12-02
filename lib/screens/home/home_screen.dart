@@ -222,7 +222,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                         UIHelper.verticalSpaceSm,
                                         CallNumberView(
                                             phoneNumber:
-                                                "${provider.userModel.counryCode ?? ""}${provider.userModel.number}"),
+                                                "${provider.userModel.counryCode ?? ""} ${provider.userModel.number}"),
                                         /* Row(
                                           mainAxisAlignment:
                                               MainAxisAlignment.center,

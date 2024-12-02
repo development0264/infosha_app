@@ -1574,7 +1574,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   /// used to show number and redirect dialpad
                   CallNumberView(
                       phoneNumber:
-                          "${provider.userModel.counryCode ?? ""}${provider.userModel.number}"),
+                          "${provider.userModel.counryCode ?? ""} ${provider.userModel.number}"),
                   headerWithEdit(
                       label: "Profession".tr,
                       color: whiteColor,
