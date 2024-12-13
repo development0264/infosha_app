@@ -11,6 +11,7 @@ import 'package:infosha/Controller/Viewmodel/userviewmodel.dart';
 import 'package:infosha/Controller/models/profession_by_other_user_model.dart';
 import 'package:infosha/Controller/models/user_model.dart';
 import 'package:infosha/config/const.dart';
+import 'package:infosha/country_list.dart';
 import 'package:infosha/screens/feed/component/feed_tile.dart';
 import 'package:infosha/screens/home/DraggableHome/dragable_home.dart';
 import 'package:infosha/screens/otherprofile/add_review_dialog.dart';
@@ -51,7 +52,9 @@ import 'package:infosha/views/widgets/social_media_instagram_view.dart';
 import 'package:infosha/views/widgets/state_country_view.dart';
 import 'package:infosha/views/widgets/ads_after_three_visit.dart';
 import 'package:infosha/views/widgets/vote_button.dart';
+import 'package:intl_phone_field/phone_number.dart';
 import 'package:jiffy/jiffy.dart';
+import 'package:libphonenumber/libphonenumber.dart';
 import 'package:provider/provider.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:shape_of_view_null_safe/shape_of_view_null_safe.dart';
@@ -1937,21 +1940,126 @@ class _ViewProfileScreenState extends State<ViewUnregisteredUser> {
     return s.contains(RegExp(r'\d'));
   }
 
+  String getCountryCode(String phoneNumber) {
+    phoneNumber = phoneNumber.replaceAll('+', '');
+
+    List<String> countryCodes = Countries.allCountries
+        .map((country) => country['dial_code']!.replaceAll('+', ''))
+        .toList()
+      ..sort((a, b) => b.length.compareTo(a.length));
+    const int minLength = 10;
+    if (phoneNumber.length > minLength) {
+      for (String code in countryCodes) {
+        if (phoneNumber.startsWith(code)) {
+          return '+$code';
+        }
+      }
+    }
+
+    return '';
+  }
+
+  String removeCountryCode(String phoneNumber) {
+    phoneNumber = phoneNumber.replaceAll('+', '');
+    List<String> countryCodes = Countries.allCountries
+        .map((country) => country['dial_code']!.replaceAll('+', ''))
+        .toList()
+      ..sort((a, b) => b.length.compareTo(a.length));
+
+    const int minLength = 10;
+
+    if (phoneNumber.length > minLength) {
+      for (String code in countryCodes) {
+        if (phoneNumber.startsWith(code)) {
+          String remainingNumber = phoneNumber.substring(code.length);
+          return remainingNumber;
+        }
+      }
+    }
+
+    return phoneNumber;
+  }
+
   Widget headerWidget(UnregisteredUserModel model) {
     String countryCode = '';
-    if (model.data!.code != null) {
-      if (model.data!.number!.contains("*") ||
-          model.data!.number!.contains("#")) {
+    String showNumber = model.data!.number!;
+    showNumber =
+        removeCountryCode(model.data!.number!.replaceAll(RegExp(r'^0+'), ''));
+
+    if (model.data!.code != null &&
+        model.data!.code != "null" &&
+        model.data!.code!.isNotEmpty) {
+      if (showNumber.contains("*") || showNumber.contains("#")) {
         countryCode = "";
       } else {
         if (containsNumber(model.data!.code ?? "")) {
-          countryCode = model.data!.code ?? "";
+          if (model.data!.number!.length > 10) {
+            if (!model.data!.number!.startsWith("0")) {
+              showNumber = model.data!.number!.replaceAll(RegExp(r'^0+'), '');
+              countryCode =
+                  "+${CountryPickerUtils.getCountryByIsoCode(model.data!.code ?? "").phoneCode.toLowerCase()}";
+            } else {
+              countryCode = getCountryCode(
+                          model.data!.number!.replaceAll(RegExp(r'^0+'), ''))
+                      .isEmpty
+                  ? model.data!.code ?? ""
+                  : getCountryCode(
+                      model.data!.number!.replaceAll(RegExp(r'^0+'), ''));
+            }
+          } else {
+            if (showNumber.contains("*") || showNumber.contains("#")) {
+              countryCode = "";
+            } else {
+              if (containsNumber(model.data!.code ?? "")) {
+                countryCode = model.data!.code ?? "";
+              } else {
+                countryCode =
+                    "+${CountryPickerUtils.getCountryByIsoCode(model.data!.code ?? "").phoneCode.toLowerCase()}";
+              }
+            }
+          }
         } else {
           countryCode =
               "+${CountryPickerUtils.getCountryByIsoCode(model.data!.code ?? "").phoneCode.toLowerCase()}";
         }
       }
+    } else if (countryCode.isEmpty) {
+      countryCode =
+          getCountryCode(model.data!.number!.replaceAll(RegExp(r'^0+'), ''));
     }
+
+    /* if (model.data!.code != null &&
+        model.data!.code != "null" &&
+        model.data!.code!.isNotEmpty) {
+      if (model.data!.number!.length > 10) {
+        if (!model.data!.number!.startsWith("0")) {
+          showNumber = model.data!.number!.replaceAll(RegExp(r'^0+'), '');
+          countryCode =
+              "+${CountryPickerUtils.getCountryByIsoCode(model.data!.code ?? "").phoneCode.toLowerCase()}";
+        } else {
+          countryCode =
+              getCountryCode(model.data!.number!.replaceAll(RegExp(r'^0+'), ''))
+                      .isEmpty
+                  ? model.data!.code ?? ""
+                  : getCountryCode(
+                      model.data!.number!.replaceAll(RegExp(r'^0+'), ''));
+        }
+      } else {
+        if (showNumber.contains("*") || showNumber.contains("#")) {
+          countryCode = "";
+        } else {
+          if (containsNumber(model.data!.code ?? "")) {
+            countryCode = model.data!.code ?? "";
+          } else {
+            countryCode =
+                "+${CountryPickerUtils.getCountryByIsoCode(model.data!.code ?? "").phoneCode.toLowerCase()}";
+          }
+        }
+      }
+    } else if (countryCode.isEmpty) {
+      countryCode =
+          getCountryCode(model.data!.number!.replaceAll(RegExp(r'^0+'), ''));
+    } */
 
     return Column(
       children: [
@@ -2015,7 +2123,7 @@ class _ViewProfileScreenState extends State<ViewUnregisteredUser> {
                 NicknameUnRegisteredView(nickName: nickNameList),
                 UIHelper.verticalSpaceSm,
                 CallNumberView(
-                  phoneNumber: "$countryCode ${model.data!.number}",
+                  phoneNumber: "$countryCode $showNumber",
                 ),
                 headerWithEdit(
                     label: "Profession".tr,

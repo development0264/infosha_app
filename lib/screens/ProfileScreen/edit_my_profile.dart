@@ -701,14 +701,14 @@ class _EditMyProfileState extends State<EditMyProfile> {
               // facebookNode.requestFocus();
               return "Please enter Facebook id".tr;
             } */
-            if (!RegExp(
-                  r'^[a-zA-Z0-9_]+$',
+            /* if (!RegExp(
+                  r"(https?|http)://([-A-Z0-9.]+)(/[-A-Z0-9+&@#/%=~_|!:,.;]*)?(\?[A-Z0-9+&@#/%=~_|!:‌​,.;]*)?",
                   caseSensitive: false,
                 ).hasMatch(value!) &&
                 value.isNotEmpty) {
               // facebookNode.requestFocus();
               return "Please enter valid Facebook id".tr;
-            }
+            } */
             return null;
           },
         ),
@@ -725,11 +725,14 @@ class _EditMyProfileState extends State<EditMyProfile> {
               // instagramNode.requestFocus();
               return "Please enter Instagram id".tr;
             } */
-            if (!RegExp(r'^[a-zA-Z0-9_]+$').hasMatch(value!) &&
+            /* if (!RegExp(
+                  r"(https?|http)://([-A-Z0-9.]+)(/[-A-Z0-9+&@#/%=~_|!:,.;]*)?(\?[A-Z0-9+&@#/%=~_|!:‌​,.;]*)?",
+                  caseSensitive: false,
+                ).hasMatch(value!) &&
                 value.isNotEmpty) {
               // instagramNode.requestFocus();
               return "Please enter valid Instagram id".tr;
-            }
+            } */
             return null;
           },
         ),

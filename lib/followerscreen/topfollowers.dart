@@ -99,7 +99,7 @@ class _TopFollowersScreenState extends State<TopFollowersScreen> {
             builder: (context, provider, child) {
           /* if (provider.topFollowersModel.data != null &&
               provider.topFollowersModel.data!.isNotEmpty) {
-            for (var data in provider.topFollowersModel.data!) {
+            for (var data in provider.topFollowersModel.data ?? []) {
               precacheImage(
                   CachedNetworkImageProvider(
                     data.profile ?? "",
@@ -110,7 +110,7 @@ class _TopFollowersScreenState extends State<TopFollowersScreen> {
 
           if (provider.topVisitorsModel.data != null &&
               provider.topVisitorsModel.data!.isNotEmpty) {
-            for (var data in provider.topVisitorsModel.data!) {
+            for (var data in provider.topVisitorsModel.data ?? []) {
               precacheImage(
                   CachedNetworkImageProvider(
                     data.profile ?? "",
@@ -269,23 +269,42 @@ class _TopFollowersScreenState extends State<TopFollowersScreen> {
                                       ),
                                     )
                                   : Expanded(
-                                      child: ListView.separated(
-                                        shrinkWrap: true,
-                                        itemCount: provider
-                                            .topFollowersModel.data!.length,
-                                        separatorBuilder: (context, index) =>
-                                            const Divider(
-                                          height: 20,
-                                          thickness: 0,
-                                          color: Colors.transparent,
-                                        ),
-                                        itemBuilder: (context, index) {
-                                          var data = provider
-                                              .topFollowersModel.data![index];
-                                          return adaptor(context, data, index);
-                                        },
+                                      child: /* SingleChildScrollView(
+                                        child: Column(
+                                            children: List.generate(
+                                          provider
+                                              .topFollowersModel.data!.length,
+                                          (index) {
+                                            var data = provider
+                                                .topFollowersModel.data![index];
+                                            return Column(
+                                              children: [
+                                                adaptor(context, data, index),
+                                                const Divider(
+                                                  height: 20,
+                                                  thickness: 0,
+                                                  color: Colors.transparent,
+                                                ),
+                                              ],
+                                            );
+                                          },
+                                        )) */
+                                          ListView.separated(
+                                      shrinkWrap: true,
+                                      itemCount: provider
+                                          .topFollowersModel.data!.length,
+                                      separatorBuilder: (context, index) =>
+                                          const Divider(
+                                        height: 20,
+                                        thickness: 0,
+                                        color: Colors.transparent,
                                       ),
-                                    )
+                                      itemBuilder: (context, index) {
+                                        var data = provider
+                                            .topFollowersModel.data![index];
+                                        return adaptor(context, data, index);
+                                      },
+                                    ))
                             ],
                           ],
                         ),
@@ -352,7 +371,60 @@ class _TopFollowersScreenState extends State<TopFollowersScreen> {
                                         ],
                                       ),
                                     )
-                                  : Expanded(
+                                  : /* Expanded(
+                                      child: SingleChildScrollView(
+                                          child: Column(
+                                              children: List.generate(
+                                      provider.topVisitorsModel.data!.length,
+                                      (index) {
+                                        var data = provider
+                                            .topVisitorsModel.data![index];
+                                        return Column(
+                                          children: [
+                                            adaptorVisitor(
+                                                context,
+                                                data.name ?? "",
+                                                data.profession ?? "-",
+                                                data.number ?? "",
+                                                data.country != null &&
+                                                        data.country != ""
+                                                    ? data.country ?? ""
+                                                    : "",
+                                                data.city != null &&
+                                                        data.city != ""
+                                                    ? data.city ?? ""
+                                                    : "",
+                                                data.profile != null
+                                                    ? data.profile ?? ""
+                                                    : "",
+                                                index,
+                                                data.id.toString(),
+                                                data.followersCount == null
+                                                    ? "0"
+                                                    : data.followersCount
+                                                        .toString(),
+                                                data.isFriend == 1
+                                                    ? true
+                                                    : false,
+                                                data.isSubscriptionActive !=
+                                                        null
+                                                    ? true
+                                                    : false,
+                                                data.activeSubscriptionPlanName ??
+                                                    "null",
+                                                data.visitsCount ?? 1,
+                                                (data.isLocked != null &&
+                                                    data.isLocked == true)),
+                                            const Divider(
+                                              height: 20,
+                                              thickness: 0,
+                                              color: Colors.transparent,
+                                            ),
+                                          ],
+                                        );
+                                      },
+                                    )))) */
+                                  Expanded(
                                       child: ListView.separated(
                                         shrinkWrap: true,
                                         itemCount: provider
@@ -977,9 +1049,9 @@ class _TopFollowersScreenState extends State<TopFollowersScreen> {
   filterTag() {
     return SizedBox(
       height: Get.height * 0.052,
-      child: Row(
-        // shrinkWrap: true,
-        // scrollDirection: Axis.horizontal,
+      child: ListView(
+        shrinkWrap: true,
+        scrollDirection: Axis.horizontal,
         children: [
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 10),
@@ -1097,8 +1169,8 @@ class _TopFollowersScreenState extends State<TopFollowersScreen> {
               ),
             ),
           ),
-          /* Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 5),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 10),
             child: Container(
                 padding: const EdgeInsets.symmetric(horizontal: 5),
                 height: Get.height * 0.052,
@@ -1150,7 +1222,7 @@ class _TopFollowersScreenState extends State<TopFollowersScreen> {
                     ],
                   ),
                 )),
-          ), */
+          ),
         ],
       ),
     );

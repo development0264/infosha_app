@@ -3,6 +3,7 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:country_code_picker/country_code_picker.dart';
+import 'package:country_pickers/utils/utils.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
@@ -192,6 +193,7 @@ class UserViewModel extends ChangeNotifier {
         updateContact();
       }
     }
+
     notifyListeners();
   }
 
@@ -570,9 +572,11 @@ class UserViewModel extends ChangeNotifier {
                   "code":
                       e.phones.isNotEmpty && e.phones.first.customLabel != null
                           ? e.phones.first.customLabel
-                          : (countryCode != "null"
-                              ? country.code ?? "+1"
-                              : countryCode),
+                          : getCountryCode(e.phones.first.number).isNotEmpty
+                              ? getCountryCode(e.phones.first.number)
+                              : (countryCode == "null"
+                                  ? country.code ?? "+1"
+                                  : countryCode),
                   "photo": e.photo != null ? base64.encode(e.photo!) : "",
                   "contact_id": e.id ?? "",
                   "email":
@@ -1042,9 +1046,11 @@ class UserViewModel extends ChangeNotifier {
               .replaceAll(")", "")),
           "code": e.phones.first.customLabel != ""
               ? e.phones.first.customLabel
-              : countryCode != "null"
-                  ? country.code ?? "+1"
-                  : countryCode,
+              : getCountryCode(e.phones.first.number).isNotEmpty
+                  ? getCountryCode(e.phones.first.number)
+                  : countryCode == "null"
+                      ? country.code ?? "+1"
+                      : countryCode,
           "photo": e.photo != null ? base64.encode(e.photo!) : "",
           "contact_id": e.id,
           "email": e.emails.isNotEmpty ? e.emails.first.address : "",
@@ -1065,6 +1071,25 @@ class UserViewModel extends ChangeNotifier {
     };
 
     uploadContactToServer(payload1);
+  }
+
+  String getCountryCode(String phoneNumber) {
+    phoneNumber = phoneNumber.replaceAll('+', '');
+
+    List<String> countryCodes = Countries.allCountries
+        .map((country) => country['dial_code']!.replaceAll('+', ''))
+        .toList()
+      ..sort((a, b) => b.length.compareTo(a.length));
+    const int minLength = 10;
+    if (phoneNumber.length > minLength) {
+      for (String code in countryCodes) {
+        if (phoneNumber.startsWith(code)) {
+          return '+$code';
+        }
+      }
+    }
+
+    return '';
   }
 
   String removeCountryCode(String phoneNumber) {
@@ -1102,9 +1127,11 @@ class UserViewModel extends ChangeNotifier {
               .replaceAll(")", "")),
           "code": e.phones.first.customLabel != ""
               ? e.phones.first.customLabel
-              : countryCode != "null"
-                  ? country.code ?? "+1"
-                  : countryCode,
+              : getCountryCode(e.phones.first.number).isNotEmpty
+                  ? getCountryCode(e.phones.first.number)
+                  : countryCode == "null"
+                      ? country.code ?? "+1"
+                      : countryCode,
           "photo": e.photo != null ? base64.encode(e.photo!) : "",
           "contact_id": e.id,
           "email": e.emails.isNotEmpty ? e.emails.first.address : "",
@@ -1123,6 +1150,10 @@ class UserViewModel extends ChangeNotifier {
         };
       }).toList()
     };
+
+    // var temp = payload1
+    //     .where((element) => element.phones.first.number.contains("3224097616"));
+    // print("temp ===> ${temp}");
 
     uploadContactToServerUpdated(payload1);
   }

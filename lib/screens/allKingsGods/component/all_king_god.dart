@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:country_state_city/models/country.dart';
@@ -50,7 +51,7 @@ class _GodKingUsersState extends State<GodKingUsers> {
     Future.microtask(() => context.read<AllKingGodModel>().getGodList());
     Future.microtask(() => context.read<AllKingGodModel>().getKingList());
 
-    kingListControlle.addListener(_scrollListenerKing);
+    // kingListControlle.addListener(_scrollListenerKing);
     godListControlle.addListener(_scrollListenerGod);
     super.initState();
   }
@@ -288,68 +289,104 @@ class _GodKingUsersState extends State<GodKingUsers> {
                                       ),
                                     )
                                   : Expanded(
-                                      child: ListView.separated(
-                                        controller: kingListControlle,
-                                        shrinkWrap: true,
-                                        physics: const BouncingScrollPhysics(),
-                                        itemCount: provider.kingListModel.data!
-                                                .data!.length +
-                                            1,
-                                        separatorBuilder: (context, index) =>
-                                            const Divider(
-                                          height: 20,
-                                          thickness: 0,
-                                          color: Colors.transparent,
-                                        ),
-                                        itemBuilder: (context, index) {
-                                          if (index <
-                                              provider.kingListModel.data!.data!
-                                                  .length) {
-                                            var data = provider.kingListModel
-                                                .data!.data![index];
-                                            return adaptor(
-                                                context,
-                                                data.user != null
-                                                    ? data.user!.username ?? ""
-                                                    : "",
-                                                data.user != null
-                                                    ? data.user!
-                                                            .user_profession ??
-                                                        "-"
-                                                    : "-",
-                                                data.user != null
-                                                    ? data.user!.number ?? ""
-                                                    : "",
-                                                data.user != null
-                                                    ? data.user!.profile_url ??
-                                                        ""
-                                                    : "",
-                                                index,
-                                                data.userId.toString(),
-                                                data.user != null
-                                                    ? data.user!.followersCount !=
-                                                            null
-                                                        ? data.user!
-                                                            .followersCount
-                                                            .toString()
-                                                        : "0"
-                                                    : "0",
-                                                data.user != null
-                                                    ? data.user!.activeSubscriptionPlanName !=
-                                                            null
-                                                        ? data.user!
-                                                            .activeSubscriptionPlanName!
-                                                        : ""
-                                                    : "",
-                                                (data.isLocked != null &&
-                                                    data.isLocked == true));
-                                          } else if (isKingoading) {
-                                            return const Center(
-                                              child: CircularProgressIndicator(
-                                                  color: baseColor),
-                                            );
+                                      child: NotificationListener<
+                                          ScrollNotification>(
+                                        onNotification:
+                                            (ScrollNotification notification) {
+                                          if (notification
+                                              is ScrollUpdateNotification) {
+                                            if (notification.metrics.pixels ==
+                                                notification
+                                                    .metrics.maxScrollExtent) {
+                                              setState(() {
+                                                isKingoading = true;
+                                              });
+                                              kingListControlle.animateTo(
+                                                kingListControlle
+                                                    .position.maxScrollExtent,
+                                                duration: const Duration(
+                                                    milliseconds: 100),
+                                                curve: Curves.easeInOut,
+                                              );
+                                              kingPage += 1;
+                                              provider
+                                                  .getMoreKingList(kingPage)
+                                                  .then((value) {
+                                                setState(() {
+                                                  isKingoading = false;
+                                                });
+                                              });
+                                            }
                                           }
+                                          return true;
                                         },
+                                        child: ListView.separated(
+                                          controller: kingListControlle,
+                                          shrinkWrap: true,
+                                          physics:
+                                              const BouncingScrollPhysics(),
+                                          itemCount: provider.kingListModel
+                                                  .data!.data!.length +
+                                              1,
+                                          separatorBuilder: (context, index) =>
+                                              const Divider(
+                                            height: 20,
+                                            thickness: 0,
+                                            color: Colors.transparent,
+                                          ),
+                                          itemBuilder: (context, index) {
+                                            if (index <
+                                                provider.kingListModel.data!
+                                                    .data!.length) {
+                                              var data = provider.kingListModel
+                                                  .data!.data![index];
+                                              return adaptor(
+                                                  context,
+                                                  data.user != null
+                                                      ? data.user!.username ??
+                                                          ""
+                                                      : "",
+                                                  data.user != null
+                                                      ? data.user!
+                                                              .user_profession ??
+                                                          "-"
+                                                      : "-",
+                                                  data.user != null
+                                                      ? data.user!.number ?? ""
+                                                      : "",
+                                                  data.user != null
+                                                      ? data.user!
+                                                              .profile_url ??
+                                                          ""
+                                                      : "",
+                                                  index,
+                                                  data.userId.toString(),
+                                                  data.user != null
+                                                      ? data.user!.followersCount !=
+                                                              null
+                                                          ? data.user!
+                                                              .followersCount
+                                                              .toString()
+                                                          : "0"
+                                                      : "0",
+                                                  data.user != null
+                                                      ? data.user!.activeSubscriptionPlanName !=
+                                                              null
+                                                          ? data.user!
+                                                              .activeSubscriptionPlanName!
+                                                          : ""
+                                                      : "",
+                                                  (data.isLocked != null &&
+                                                      data.isLocked == true));
+                                            } else if (isKingoading) {
+                                              return const Center(
+                                                child:
+                                                    CircularProgressIndicator(
+                                                        color: baseColor),
+                                              );
+                                            }
+                                          },
+                                        ),
                                       ),
                                     )
                             ],

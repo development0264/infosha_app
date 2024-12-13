@@ -49,14 +49,25 @@ class LoadAfterThreeVisit {
     profileVisitCount++;
     await prefs.setInt('profileVisitCount', profileVisitCount);
     if (profileVisitCount > 3) {
-      profileVisitCount = 0;
+      if (DateTime.now().difference(lastResetTime!).inHours < 24) {
+        // Continuously show 30-second ad if 24 hours haven't passed
+        RewardedScreen().loadAd(false); // Show rewarded ad (30 seconds)
+      } else {
+        // Reset if 24 hours have passed
+        profileVisitCount = 0;
+        lastResetTime = DateTime.now();
+        await prefs.setInt('profileVisitCount', profileVisitCount);
+        await prefs.setString(
+            'lastResetTime', lastResetTime!.toIso8601String());
+      }
+      /*  profileVisitCount = 0;
       lastResetTime = DateTime.now();
       await prefs.setInt('profileVisitCount', profileVisitCount);
       await prefs.setString('lastResetTime', lastResetTime!.toIso8601String());
-      RewardedScreen().loadAd(false);
+      RewardedScreen().loadAd(false); */
     } else {
       InterstitialScreen().showAds();
     }
-    print("profileVisitCount ===> $profileVisitCount");
+    log("profileVisitCount ===> $profileVisitCount");
   }
 }
