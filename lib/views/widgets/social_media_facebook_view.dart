@@ -144,17 +144,15 @@ class _AddressViewState extends State<SocialMediaFacebookView> {
                                           .is_subscription_active ==
                                       true) &&
                               (Provider.of<UserViewModel>(context,
-                                      listen: false)
-                                  .userModel
-                                  .active_subscription_plan_name!
-                                  .contains(
-                                      "god") ||
+                                          listen: false)
+                                      .userModel
+                                      .active_subscription_plan_name!
+                                      .contains("god") ||
                                   Provider.of<UserViewModel>(context,
                                           listen: false)
                                       .userModel
                                       .active_subscription_plan_name!
-                                      .contains("king")
-                              )) ...[
+                                      .contains("king"))) ...[
                             WidgetSpan(
                                 child: CustomText(
                               text: " (${e.addedBy})",
@@ -175,7 +173,9 @@ class _AddressViewState extends State<SocialMediaFacebookView> {
   }
 
   void openFacebookProfile(String userId) async {
-    final url = 'https://www.facebook.com/$userId';
+    final url = userId.contains("facebook.com")
+        ? userId
+        : 'https://www.facebook.com/$userId';
 
     if (await canLaunchUrl(Uri.parse(url))) {
       await launchUrl(Uri.parse(url));

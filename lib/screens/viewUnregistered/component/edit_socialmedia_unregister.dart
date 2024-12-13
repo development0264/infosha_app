@@ -138,13 +138,13 @@ class _EditSocialMedialScreenState extends State<EditSocialMedialUnregister> {
                       /*  if (value!.isEmpty) {
                         return "Please enter id".tr;
                       } */
-                      if (!RegExp(
-                            r'^[a-zA-Z0-9_]+$',
+                      /* if (!RegExp(
+                            r"(https?|http)://([-A-Z0-9.]+)(/[-A-Z0-9+&@#/%=~_|!:,.;]*)?(\?[A-Z0-9+&@#/%=~_|!:‌​,.;]*)?",
                             caseSensitive: false,
                           ).hasMatch(value!) &&
                           value.isNotEmpty) {
                         return "Please enter valid link".tr;
-                      }
+                      } */
                       return null;
                     },
                   ),
@@ -159,10 +159,13 @@ class _EditSocialMedialScreenState extends State<EditSocialMedialUnregister> {
                       /* if (value!.trim().isEmpty) {
                         return "Please enter id".tr;
                       } */
-                      if (!RegExp(r'^[a-zA-Z0-9_]+$').hasMatch(value!.trim()) &&
+                      /* if (!RegExp(
+                            r"(https?|http)://([-A-Z0-9.]+)(/[-A-Z0-9+&@#/%=~_|!:,.;]*)?(\?[A-Z0-9+&@#/%=~_|!:‌​,.;]*)?",
+                            caseSensitive: false,
+                          ).hasMatch(value!) &&
                           value.isNotEmpty) {
                         return "Please enter valid id".tr;
-                      }
+                      } */
                       return null;
                     },
                   ),

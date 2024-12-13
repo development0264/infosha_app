@@ -174,7 +174,9 @@ class _AddressViewState extends State<SocialMediaInstagramView> {
   }
 
   void openInstagramProfile(String userId) async {
-    final url = 'https://www.instagram.com/$userId';
+    final url = userId.contains("instagram.com")
+        ? userId
+        : 'https://www.instagram.com/$userId';
 
     if (await canLaunchUrl(Uri.parse(url))) {
       await launchUrl(Uri.parse(url));
